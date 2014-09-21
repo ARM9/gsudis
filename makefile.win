@@ -15,8 +15,8 @@ else
 	CXXFLAGS := $(CXXFLAGS) -O3 -fomit-frame-pointer
 endif
 
-TARGET	:= $(shell basename $(CURDIR)).exe
-OUTPUT		= $(CURDIR)/$(TARGET)
+TARGET		:= $(shell basename $(CURDIR)).exe
+OUTPUT		:= $(CURDIR)/$(TARGET)
 SOURCES		:= src
 INCLUDES	:= 
 
@@ -31,7 +31,7 @@ export INCLUDE	:= $(foreach dir,$(INCLUDES),-I$(CURDIR)/$(dir))
 %.o : %.cpp
 	$(CXX) $(CXXFLAGS) $(INCLUDE) -c $< -o $@
 #-----------------------------------------
-.PHONY: clean, run
+.PHONY: clean run
 
 all: $(OUTPUT)
 	

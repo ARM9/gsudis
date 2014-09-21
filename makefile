@@ -18,7 +18,7 @@ ifeq ($(OS),Windows_NT)
 else
 	TARGET	:= $(shell basename $(CURDIR))
 endif
-OUTPUT		= $(CURDIR)/$(TARGET)
+OUTPUT		:= $(CURDIR)/$(TARGET)
 SOURCES		:= src
 INCLUDES	:= 
 
@@ -33,7 +33,7 @@ export INCLUDE	:= $(foreach dir,$(INCLUDES),-I$(CURDIR)/$(dir))
 %.o : %.cpp
 	$(CXX) $(CXXFLAGS) $(INCLUDE) -c $< -o $@
 #-----------------------------------------
-.PHONY: clean, run
+.PHONY: clean run
 
 all: $(OUTPUT)
 	
