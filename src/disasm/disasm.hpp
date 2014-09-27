@@ -6,8 +6,8 @@ bool is_alt1(uint8 opcode);
 bool is_alt2(uint8 opcode);
 bool is_alt3(uint8 opcode);
 
-uint8 is_from(uint8 opcode);
-uint8 is_to(uint8 opcode);
+bool is_from(uint8 opcode);
+bool is_to(uint8 opcode);
 
 #define table16(id) \
   id, id+1, id+2, id+3, id+4, id+5, id+6, id+7, id+8, id+9, id+10, id+11, id+12, id+13, id+14, id+15

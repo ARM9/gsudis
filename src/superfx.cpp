@@ -27,15 +27,7 @@ uint8 SuperFX::step()
 {
   regs.r[15] += step_length;
   regs.pipeline = bus_read((regs.pbr << 16) + regs.r[15].data);
-
   regs.sfr = regs.sfr & ~(SFR_ALT3);
-  switch (regs.pipeline){
-    case (0x3d): regs.sfr = regs.sfr | SFR_ALT1; break;
-    case (0x3e): regs.sfr = regs.sfr | SFR_ALT2; break;
-    case (0x3f): regs.sfr = regs.sfr | SFR_ALT3; break;
-    default:
-      break;
-  }
 
   return regs.pipeline;
 }

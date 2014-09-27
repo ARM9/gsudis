@@ -10,7 +10,7 @@ void SuperFX::disassemble()
       break;
     if (dis_stop > 1){
       if (dis_stop++ > 2)
-        return;
+        break;
     }
 
     *out_buffer = 0;
@@ -57,15 +57,20 @@ bool SuperFX::is_alt3(uint8 opcode)
   return std::binary_search(alt3_lut.begin(), alt3_lut.end(), opcode);
 }
 
-// return value of 0 means op is a to/from instruction
-uint8 SuperFX::is_from(uint8 op)
+bool SuperFX::is_from(uint8 op)
 {
-  return ((op & 0xf0) ^ 0xb0);
+  if ((op & 0xf0) ^ 0xb0)
+    return false;
+  else
+    return true;
 }
 
-uint8 SuperFX::is_to(uint8 op)
+bool SuperFX::is_to(uint8 op)
 {
-  return ((op & 0xf0) ^ 0x10);
+  if ((op & 0xf0) ^ 0x10)
+    return false;
+  else
+    return true;
 }
 
 void SuperFX::disassemble_opcode(char* output)
@@ -144,10 +149,10 @@ void SuperFX::disassemble_opcode(char* output)
       break;
     case16(0x10): sprintf(t, "to r%u", op0 & 15); break;
     case16(0x20): 
-      if (is_from(op1) == 0){
+      if (is_from(op1)){
         sprintf(t, "moves r%u, r%u", op0 & 15, op1 & 15);
         step_length = 2;
-      }else if (is_to(op1) == 0){
+      }else if (is_to(op1)){
         sprintf(t, "move r%u, r%u", op1 & 15, op0 & 15);
         step_length = 2;
       }else{

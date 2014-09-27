@@ -8,7 +8,7 @@ CXXFLAGS	:= -std=c++11 -Wall -Wextra -pedantic -fno-rtti -fno-exceptions
 LIBS		:= 
 
 ifeq (1, $(DEBUG))
-	CXXFLAGS := $(CXXFLAGS) -g -O0 -D_DEBUG
+	CXXFLAGS := $(CXXFLAGS) -g -Og -D_DEBUG
 else
 	CXXFLAGS := $(CXXFLAGS) -O3 -fomit-frame-pointer
 endif
