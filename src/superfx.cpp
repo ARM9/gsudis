@@ -20,9 +20,6 @@ SuperFX::~SuperFX()
 {
 }
 
-#define case16(id) \
-  case id+ 0: case id+ 1: case id+ 2: case id+ 3: case id+ 4: case id+ 5: case id+ 6: case id+ 7: \
-  case id+ 8: case id+ 9: case id+10: case id+11: case id+12: case id+13: case id+14: case id+15
 uint8 SuperFX::step()
 {
   regs.r[15] += step_length;
@@ -31,5 +28,4 @@ uint8 SuperFX::step()
 
   return regs.pipeline;
 }
-#undef case16
 
