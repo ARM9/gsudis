@@ -1,54 +1,61 @@
 
-DEBUG	:=	0
-
 CXX	:= g++
 LD	:= g++
 
 CXXFLAGS	:= -std=c++11 -Wall -Wextra -pedantic -fno-rtti -fno-exceptions
-LIBS		:= 
-
-ifeq (1, $(DEBUG))
-	CXXFLAGS := $(CXXFLAGS) -g -Og -D_DEBUG
-else
-	CXXFLAGS := $(CXXFLAGS) -O3 -fomit-frame-pointer
-endif
+LDFLAGS		:=
+LIBS		:=
 
 ifeq ($(OS),Windows_NT)
 	TARGET	:= $(shell basename $(CURDIR)).exe
 else
 	TARGET	:= $(shell basename $(CURDIR))
 endif
+
 OUTPUT		:= $(CURDIR)/$(TARGET)
+BUILD		:= build
 SOURCES		:= src
-INCLUDES	:= 
+INCLUDES	:= $(BUILD)
+INCLUDE		:= $(foreach dir,$(INCLUDES),-I$(CURDIR)/$(dir))
 
 CXXFILES	:= $(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.cpp)))
-OFILES		:= $(CXXFILES:.cpp=.o)
-PRECOMPILED	:= src/precompiled.hpp.gch
+OFILES		:= $(CXXFILES:%.cpp=build/%.o)
+PRECOMPILED	:= build/precompiled.hpp.gch
+DEPFILES	:= $(OFILES:.o=.d)
 
 export VPATH	:= $(foreach dir,$(SOURCES),$(CURDIR)/$(dir))
-
-export INCLUDE	:= $(foreach dir,$(INCLUDES),-I$(CURDIR)/$(dir))
 #-----------------------------------------
-%.o : %.cpp
-	$(CXX) $(CXXFLAGS) $(INCLUDE) -c $< -o $@
+build/%.o : %.cpp
+	$(CXX) $(CXXFLAGS) -MMD $(INCLUDE) -c $< -o $@
 #-----------------------------------------
-.PHONY: clean run
+.PHONY: all clean debug release run
 
-all: $(OUTPUT)
-	
+all: release
+
+debug: CXXFLAGS	:= $(CXXFLAGS) -g -Og -D_DEBUG
+debug: LDFLAGS	:= -g
+debug: $(OUTPUT)
+
+release: CXXFLAGS	:= $(CXXFLAGS) -O3 -fomit-frame-pointer
+release: LDFLAGS	:= -s
+release: $(OUTPUT)
+
+$(BUILD):
+	@mkdir -p $@
+
+$(OUTPUT): $(BUILD) $(OFILES)
+	$(CXX) $(LDFLAGS) -o $@ $(OFILES) $(LIBS)
+
+$(OFILES): $(PRECOMPILED)
+
+$(PRECOMPILED) : src/precompiled.hpp
+	$(CXX) $(CXXFLAGS) -MMD $(INCLUDE) -o $@ $<
+
 clean:
-	rm -rf $(OUTPUT) $(OFILES)
+	rm -rf $(OUTPUT) $(BUILD)
 
 run: $(OUTPUT)
 	$(OUTPUT)
 
-$(OUTPUT): $(OFILES)
-	$(CXX) $(CXXFLAGS) -o $@ $(OFILES) $(LIBS) 
-
-$(OFILES): $(PRECOMPILED) 
-
-
-$(PRECOMPILED) : src/precompiled.hpp
-	$(CXX) $(CXXFLAGS) $(INCLUDE) $<
+-include $(DEPFILES)
 

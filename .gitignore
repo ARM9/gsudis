@@ -1,8 +1,7 @@
+build/
 tstrom
 gsudis
 *.exe
-*.dll
-*.obj
 *.o
 *.hpp.gch
 *.sfc
@@ -10,26 +9,11 @@ gsudis
 *.bin
 *.txt
 *.asm
-*.vim
-*.vcproj
-*.sln
-*.ncb
-*.suo
-*.user
 
-*~
 .*~
+*~
 *.swp
 *.swo
 *.tmp
-\#*\#
-.DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
 .tags
 tags
-.Trashes
-Icon?
-ehthumbs.db
-Thumbs.db
