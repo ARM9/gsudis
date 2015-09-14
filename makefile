@@ -19,13 +19,13 @@ INCLUDES	:= $(BUILD)
 INCLUDE		:= $(foreach dir,$(INCLUDES),-I$(CURDIR)/$(dir))
 
 CXXFILES	:= $(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.cpp)))
-OFILES		:= $(CXXFILES:%.cpp=build/%.o)
-PRECOMPILED	:= build/precompiled.hpp.gch
+OFILES		:= $(CXXFILES:%.cpp=$(BUILD)/%.o)
+PRECOMPILED	:= $(BUILD)/precompiled.hpp.gch
 DEPFILES	:= $(OFILES:.o=.d)
 
 export VPATH	:= $(foreach dir,$(SOURCES),$(CURDIR)/$(dir))
 #-----------------------------------------
-build/%.o : %.cpp
+$(BUILD)/%.o : %.cpp
 	$(CXX) $(CXXFLAGS) -MMD $(INCLUDE) -c $< -o $@
 #-----------------------------------------
 .PHONY: all clean debug release run
