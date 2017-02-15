@@ -1,13 +1,13 @@
 #include "precompiled.hpp"
 #include "rom.hpp"
 
-ROM::ROM(std::string &fname, size_t begin, size_t length)
-: m_rom_file(fname, std::ios::binary),
-  m_data((std::istreambuf_iterator<char>(m_rom_file)),
-         (std::istreambuf_iterator<char>())),
-  m_begin(begin),
-  m_length(length)
+ROM::ROM(std::string &fname)
 {
+    std::ifstream f(fname, std::ios::binary);
+    std::istream& rom_file = (fname == "-") ? std::cin : f;
+    std::istreambuf_iterator<char> begin(rom_file), end;
+    std::vector<uint8> data(begin, end);
+    m_data = data;
 }
 
 ROM::~ROM()

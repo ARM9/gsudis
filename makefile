@@ -2,7 +2,7 @@
 CXX	:= g++
 LD	:= g++
 
-CXXFLAGS	:= -std=c++11 -Wall -Wextra -pedantic -fno-rtti -fno-exceptions
+CXXFLAGS	:= -std=c++14 -Wall -Wextra -pedantic -fno-rtti -fno-exceptions
 LDFLAGS		:=
 LIBS		:=
 

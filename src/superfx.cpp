@@ -5,11 +5,12 @@
 #include "disasm/disasm.cpp"
 
 SuperFX::SuperFX(std::string &fname, int begin, int end, int p_stop)
-: rom(fname, begin, end - begin),
+: rom(fname),
   dis_end(end),
   dis_stop(p_stop),
   step_length(1)
 {
+  if(end == -1) dis_end = 0x8000+rom.size()-2;
   memory_reset();
   regs.reset();
   regs.r[15] = begin - 1;
